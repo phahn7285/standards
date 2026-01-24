@@ -1,10 +1,12 @@
+#!/usr/bin/env zsh
+
 REPOS=(adminer butterfly db-api docker-api docs docsify-server kafka kafka-api kafka-ui metabase netdata nginx polygonio react cadvisor) && \
 for r in "${REPOS[@]}"; do \
-  [ -d "$r/.git" ] || { echo "SKIP (not a git repo): $r"; continue; }; \
-  cd "$r" || continue; \
+  p="$HOME/$r"; \
+  [ -d "$p/.git" ] || { echo "SKIP (not a git repo): $r"; continue; }; \
+  cd "$p" || { echo "SKIP (cd failed): $r"; continue; }; \
   if [ ! -f .gitmodules ] || ! git config -f .gitmodules --get submodule.standards.path >/dev/null 2>&1; then \
     echo "SKIP (no standards submodule): $r"; \
-    cd - >/dev/null 2>&1; \
     continue; \
   fi; \
   BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo main)"; \
@@ -20,6 +22,5 @@ for r in "${REPOS[@]}"; do \
   else \
     echo "NO CHANGE: $r"; \
   fi; \
-  cd - >/dev/null 2>&1; \
 done
 
