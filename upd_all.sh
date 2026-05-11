@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-REPOS=(adminer butterfly db-api docker-api docs docsify-server kafka kafka-api kafka-ui metabase netdata nginx polygonio react cadvisor) && \
+REPOS=(adminer butterfly db-api docker-api docs docsify-server kafka kafka-api kafka-ui metabase netdata nginx polygonio react) && \
 for r in "${REPOS[@]}"; do \
   p="$HOME/$r"; \
   [ -d "$p/.git" ] || { echo "SKIP (not a git repo): $r"; continue; }; \
