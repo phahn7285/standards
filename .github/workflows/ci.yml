@@ -1,0 +1,27 @@
+# Profile: Docs / standards — markdown presence and structure hygiene.
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Require Markdown files
+        run: |
+          count=$(find . -name '*.md' ! -path './.git/*' | wc -l)
+          echo "markdown_files=$count"
+          test "$count" -gt 0
+      - name: Reject empty Markdown files
+        run: |
+          find . -name '*.md' ! -path './.git/*' -size 0 | tee /tmp/empty-md.txt
+          test ! -s /tmp/empty-md.txt
